@@ -21,6 +21,9 @@ df <- fread("shop clothing.csv")
 ################# Exploración del Data Frame #########################
 ######################################################################
 
+
+#View(df)
+
 #Vemos cuantas filas y columnas tiene el archivo
 dim(df)
 
@@ -312,6 +315,40 @@ ggplot(df_categoria, aes(x = categoria, y = sesiones, fill = categoria)) +
     panel.grid.minor = element_blank()
   )
 
+####### C) Evolución de los clicks de navegación  ###################
+
+# Vector con nombres de meses
+nombres_meses <- c("Abril", "Mayo", "Junio", "Julio", "Agosto")
+
+df %>%
+  group_by(mes) %>%
+  summarise(total_clicks = sum(clicks_sesion), .groups = "drop") %>%
+  #arrange(mes) %>%
+  #filter(mes >= 4 & mes <= 8) %>%
+  ggplot(aes(x = factor(mes), y = total_clicks)) +
+  geom_bar(stat = "identity", fill = "#001F3F") +
+  # geom_text(aes(label = round(total_clicks, 2)), 
+  #           vjust = -0.5, size = 4, color = "black") +  # valores arriba de las barras
+  scale_x_discrete(labels = nombres_meses) +       # nombres en eje X
+  scale_y_continuous(labels = label_number(accuracy = 1), expand = expansion(mult = c(0, 0.1))) +  # espacio arriba para texto
+  labs(
+    x = "",
+    y = "",
+    title = "Evolución de clicks por mes durante el 2008",
+    caption = "Fuente: elaboración propia"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA),
+    axis.line = element_line(color = "black"),
+    plot.title = element_text(color = "#00008B", size = 16, face = "bold", hjust = 0.5),  # título centrado
+    plot.caption = element_text(hjust = 0, size = 10, color = "gray40")
+  )
+
+
+
 ####### D) Numero total de transacciones y de items ###################
 
 # 1. Encuentramos el número de transacciones
@@ -377,17 +414,16 @@ ggplot(top10_df, aes(x = reorder(items, support), y = support, fill = support)) 
   coord_flip() +
   scale_fill_gradientn(colours = rev(paletteer_c("grDevices::YlOrRd", n = 10))) +
   labs(
-    title = "Top 10 itemsets frecuentes (2 ítems)", 
-    x = "Itemsets", 
-    y = "Soporte"
+    title = "Top 10 itemsets frecuentes (2 ítems)"
   ) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal() +
   theme(
     plot.title       = element_text(face = "bold", size = 14, hjust = 0.5),
-    axis.title.x     = element_text(face = "bold"),
-    axis.title.y     = element_text(face = "bold"),
-    axis.text        = element_text(face = "bold"),
+    axis.title.x     = element_text(face = "bold", size = 12, color = "black"),
+    axis.title.y     = element_text(face = "bold", size = 12, color = "black"),
+    axis.text.x      = element_text(face = "bold", size = 12, color = "black"),
+    axis.text.y      = element_text(face = "bold", size = 12, color = "black"),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   )
