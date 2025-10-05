@@ -315,7 +315,7 @@ ggplot(df_categoria, aes(x = categoria, y = sesiones, fill = categoria)) +
     panel.grid.minor = element_blank()
   )
 
-####### c) Evolución de los clicks de navegación  ###################
+####### C) Evolución de los clicks de navegación  ###################
 
 # Vector con nombres de meses
 nombres_meses <- c("Abril", "Mayo", "Junio", "Julio", "Agosto")
